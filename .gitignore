@@ -3,3 +3,6 @@
 *.iml
 target/
 benchmark
+docs
+environment
+
