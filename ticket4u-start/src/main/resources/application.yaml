@@ -8,6 +8,20 @@ server:
 spring:
   application:
     name: ticket4u-start
+  
+  # Redis server connection settings
+  data:
+    redis:
+      host: localhost
+      port: 6380
+      password: ""
+      lettuce:
+        pool:  # Coonection Pool setting
+          max-active: 8  # Maximun number of active connections in the pool (uses -1 for no limit)
+          max-idle: 8 # Maximum number of idle connections in the pool
+          min-idle: 0 # Minimum number of idle connections in the pool
+          max-wait: -1ms # Maximum wat time to get a connection from the pool (uses -1 for no limt)
+      connect-timeout: 30000
 
 resilience4j:
   circuitbreaker:
