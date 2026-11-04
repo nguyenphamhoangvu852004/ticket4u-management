@@ -1,6 +1,6 @@
 package com.nguyenvudev.service.event.impl;
 
-import com.nguyenvudev.service.HiDomainService;
+import com.nguyenvudev.domain.service.HiDomainService;
 import com.nguyenvudev.service.event.EventApplicationService;
 import org.springframework.stereotype.Service;
 

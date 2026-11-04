@@ -1,6 +1,6 @@
 package com.nguyenvudev.persistence.repository;
 
-import com.nguyenvudev.repository.HiDomainRepository;
+import com.nguyenvudev.domain.repository.HiDomainRepository;
 import org.springframework.stereotype.Service;
 
 @Service
