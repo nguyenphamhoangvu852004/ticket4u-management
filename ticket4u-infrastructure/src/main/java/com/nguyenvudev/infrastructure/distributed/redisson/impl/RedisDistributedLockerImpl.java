@@ -1,4 +1,4 @@
-package com.nguyenvudev.distributed.redisson.impl;
+package com.nguyenvudev.infrastructure.distributed.redisson.impl;
 
 import java.util.concurrent.TimeUnit;
 
@@ -6,8 +6,8 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
-import com.nguyenvudev.distributed.redisson.RedisDistributedLocker;
-import com.nguyenvudev.distributed.redisson.RedisDistributedService;
+import com.nguyenvudev.infrastructure.distributed.redisson.RedisDistributedLocker;
+import com.nguyenvudev.infrastructure.distributed.redisson.RedisDistributedService;
 
 import lombok.extern.slf4j.Slf4j;
 

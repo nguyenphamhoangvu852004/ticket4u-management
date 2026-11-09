@@ -1,7 +1,7 @@
-package com.nguyenvudev.service.impl;
+package com.nguyenvudev.domain.service.impl;
 
-import com.nguyenvudev.repository.HiDomainRepository;
-import com.nguyenvudev.service.HiDomainService;
+import com.nguyenvudev.domain.repository.HiDomainRepository;
+import com.nguyenvudev.domain.service.HiDomainService;
 import org.springframework.stereotype.Service;
 
 @Service

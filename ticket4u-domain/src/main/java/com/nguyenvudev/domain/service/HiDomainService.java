@@ -1,4 +1,4 @@
-package com.nguyenvudev.service;
+package com.nguyenvudev.domain.service;
 
 public interface HiDomainService {
     /***

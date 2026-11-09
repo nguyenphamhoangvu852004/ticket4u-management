@@ -1,7 +1,7 @@
-package com.nguyenvudev.resource;
+package com.nguyenvudev.controller.resource;
 
 
-import com.nguyenvudev.service.event.EventApplicationService;
+import com.nguyenvudev.application.service.event.EventApplicationService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import org.springframework.web.bind.annotation.GetMapping;

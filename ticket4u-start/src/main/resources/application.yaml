@@ -8,7 +8,19 @@ server:
 spring:
   application:
     name: ticket4u-start
-  
+  datasource:
+    url: jdbc:mysql://localhost:3307/vetautet?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: defaultpassword
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   # Redis server connection settings
   data:
     redis:

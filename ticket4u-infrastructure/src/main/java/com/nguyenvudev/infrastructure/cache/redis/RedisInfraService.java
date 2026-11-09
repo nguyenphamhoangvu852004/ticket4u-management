@@ -1,4 +1,4 @@
-package com.nguyenvudev.cache.redis;
+package com.nguyenvudev.infrastructure.cache.redis;
 
 public interface RedisInfraService {
     void setString(String key, String value);

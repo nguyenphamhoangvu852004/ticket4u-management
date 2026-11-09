@@ -1,4 +1,4 @@
-package com.nguyenvudev.cache.redis;
+package com.nguyenvudev.infrastructure.cache.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +22,7 @@ public class RedisInfraServiceImpl implements RedisInfraService {
 
     @Override
     public void setString(String key, String value) {
-        if (StringUtils.hasLength(key)) {
+        if (!StringUtils.hasLength(key)) {
             return;
         }
         redisTemplate.opsForValue().set(key, value);
@@ -35,7 +35,7 @@ public class RedisInfraServiceImpl implements RedisInfraService {
 
     @Override
     public void setObject(String key, Object value) {
-        if (StringUtils.hasLength(key)) {
+        if (!StringUtils.hasLength(key)) {
             return;
         }
 

@@ -1,4 +1,4 @@
-package com.nguyenvudev.persistence.repository;
+package com.nguyenvudev.infrastructure.persistence.repository;
 
 import com.nguyenvudev.domain.repository.HiDomainRepository;
 import org.springframework.stereotype.Service;

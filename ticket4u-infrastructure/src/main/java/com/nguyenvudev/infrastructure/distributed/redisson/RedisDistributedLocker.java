@@ -1,4 +1,4 @@
-package com.nguyenvudev.distributed.redisson;
+package com.nguyenvudev.infrastructure.distributed.redisson;
 
 import java.util.concurrent.TimeUnit;
 
