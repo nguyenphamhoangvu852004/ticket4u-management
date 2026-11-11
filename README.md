@@ -2,7 +2,7 @@
 
 Hệ thống đặt vé theo kiến trúc DDD, sử dụng Spring Boot, MySQL, Redis, ...
 
-> 📌 Đây là bản thiết kế lại từ dự án Tieck4u microservices trước đó: [ticket4u-deprecated](https://github.com/nguyenphamhoangvu852004/ticket4u).
+> 📌 Đây là bản thiết kế lại từ dự án Ticket4u microservices trước đó: [ticket4u-deprecated](https://github.com/nguyenphamhoangvu852004/ticket4u).
 > Bản cũ gồm 3 service với 3 tech stack khác nhau; bản này tập trung vào thiết kế lấy domain làm trung tâm,
 > đảm bảo tính nhất quán dữ liệu khi có nhiều request đồng thời, và hiệu năng.
 
