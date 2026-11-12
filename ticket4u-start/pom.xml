@@ -38,7 +38,7 @@
                 <configuration>
                     <mainClass>com.nguyenvudev.StartApplication</mainClass>
                 </configuration>
-<executions>
+                <executions>
                     <execution>
                         <goals>
                             <goal>repackage</goal>
