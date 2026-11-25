@@ -34,6 +34,32 @@ public class RedisInfraServiceImpl implements RedisInfraService {
     }
 
     @Override
+    public void setInt(String key, Integer value) {
+        if (!StringUtils.hasLength(key)){
+            return;
+        }
+        this.redisTemplate.opsForValue().set(key,value);
+    }
+
+    @Override
+    public int getInt(String key) {
+        if (!StringUtils.hasLength(key)) {
+            return 0;
+        }
+        Object value = redisTemplate.opsForValue().get(key);
+        if (value == null) {
+            return 0;
+        }
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+        try {
+            return Integer.parseInt(value.toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+    @Override
     public void setObject(String key, Object value) {
         if (!StringUtils.hasLength(key)) {
             return;
@@ -76,6 +102,16 @@ public class RedisInfraServiceImpl implements RedisInfraService {
         }
 
         return null;
+    }
+
+    @Override
+    public void delete(String key) {
+        this.redisTemplate.delete(key);
+    }
+
+    @Override
+    public RedisTemplate getRedisTemplate() {
+        return this.redisTemplate;
     }
 
 }

@@ -1,9 +1,8 @@
 server:
   port: 8081
-  # tomcat:
-  #   threads:
-  #     max: 10
-
+  tomcat:
+    threads:
+      max: 200
 
 spring:
   application:
@@ -13,14 +12,19 @@ spring:
     username: root
     password: defaultpassword
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 20
+      connection-timeout: 5000
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: none
-    show-sql: true
+    show-sql: false
+    open-in-view: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
   # Redis server connection settings
   data:
     redis:
@@ -28,13 +32,17 @@ spring:
       port: 6380
       password: ""
       lettuce:
-        pool:  # Coonection Pool setting
-          max-active: 8  # Maximun number of active connections in the pool (uses -1 for no limit)
-          max-idle: 8 # Maximum number of idle connections in the pool
-          min-idle: 0 # Minimum number of idle connections in the pool
-          max-wait: -1ms # Maximum wat time to get a connection from the pool (uses -1 for no limt)
+        pool:
+          enabled: false
+#              pool:  # Coonection Pool setting
+          max-active: 10  # Maximun number of active connections in the pool (uses -1 for no limit)
+          max-idle: 5 # Maximum number of idle connections in the pool
+          min-idle: 5 # Minimum number of idle connections in the pool
+#          max-wait: -1ms # Maximum wat time to get a connection from the pool (uses -1 for no limt)
       connect-timeout: 30000
-
+#  threads:
+#    virtual:
+#      enabled: true
 resilience4j:
   circuitbreaker:
     instances:
