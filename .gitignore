@@ -4,6 +4,8 @@
 target/
 benchmark
 docs
-environment
+environment/mysql-default-data
+environment/prometheus-default-data/data
+environment/grafana-default-data
 .codegraph
 vegeta

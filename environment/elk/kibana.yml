@@ -1,0 +1,5 @@
+---
+
+server.host: 0.0.0.0
+elasticsearch.hosts: ["http://ticket4u-elasticsearch:9200"]
+monitoring.ui.container.elasticsearch.enabled: false

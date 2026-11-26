@@ -1,0 +1,153 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ticket4u-mysql
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=defaultpassword
+    volumes:
+      - ./mysql-default-data:/var/lib/mysql
+    networks:
+      - monitoring
+
+  redis:
+    image: redis:8.0
+    container_name: ticket4u-redis
+    ports:
+      - 6380:6379
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus:main
+    container_name: ticket4u-prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus-default-data/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-default-data/data:/prometheus
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    container_name: ticket4u-grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana-default-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SERVER_DOMAIN=localhost
+      - GF_LOG_MODE=console file
+      - GF_LOG_FILTERS=alerting.notifier.slack:debug alermanager:debug ngalert:debug
+    networks:
+      - monitoring
+
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: ticket4u-node-exporter
+    restart: unless-stopped
+    ports:
+      - 9100:9100
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    networks:
+      - monitoring
+
+  mysql-exporter:
+    image: prom/mysqld-exporter:latest
+    container_name: ticket4u-mysql-exporter
+    restart: unless-stopped
+    ports:
+      - 9104:9104
+    volumes:
+      - ./mysql-exporter/.my.cnf:/etc/mysql/.my.cnf
+    command:
+      - '--config.my-cnf=/etc/mysql/.my.cnf'
+      - '--collect.engine_innodb_status'
+      - '--collect.info_schema.processlist'
+      - '--collect.info_schema.tables'
+      - '--collect.info_schema.query_response_time'
+      - '--collect.perf_schema.file_events'
+      - '--collect.perf_schema.eventsstatements'
+      - '--collect.perf_schema.indexiowaits'
+    networks:
+      - monitoring
+
+  redis-exporter:
+    image: oliver006/redis_exporter
+    container_name: ticket4u-redis-exporter
+    restart: unless-stopped
+    ports:
+      - 9121:9121
+    command:
+      - '--redis.addr=redis://ticket4u-redis:6379'
+    networks:
+      - monitoring
+
+  elasticsearch:
+    image: elasticsearch:9.5.5
+    container_name: ticket4u-elasticsearch
+    volumes:
+      - ./elk/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+    environment:
+      ES_JAVA_OPTS: "-Xms256m -Xms256m"
+      discovery.type: single-node
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    networks:
+      - monitoring
+
+  logstash:
+    image: logstash:9.5.5
+    container_name: ticket4u-logstash
+    volumes:
+      - ./elk/logstash.yml:/user/share/logstash/config/logstash.yml
+      - ./elk/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+      - "5033:5000/tcp"
+      - "5022:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - monitoring
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana:9.5.5
+    container_name: ticket4u-kibana
+    volumes:
+      - ./elk/kibana.yml:/usr/share/kibana/config/kibana.yml
+    environment:
+      - "ELASTICSEARCH_HOSTS=http://ticket4u-elasticsearch:9200"
+    ports:
+      - 5601:5601
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    name: monitoring
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: br-monitoring
