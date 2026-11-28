@@ -29,10 +29,10 @@ cd ~ && git clone -b main https://github.com/nguyenphamhoangvu852004/ticket4u-ma
 chmod +x ./t4u && ./t4u
 ```
 
-3. Mở shell khác, vào thư mục dự án đã clone và chạy ứng dụng Spring Boot:
+3. Chạy ứng dụng Spring Boot:
 
 ```bash
-cd ~/ticket4u-management && mvn spring-boot:run -pl ticket4u-start/
+mvn spring-boot:run -pl ticket4u-start/
 ```
 
 Ứng dụng lắng nghe tại `http://localhost:8081`.
