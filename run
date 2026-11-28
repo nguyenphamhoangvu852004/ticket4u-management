@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+
+COMPOSE_FILE="./environment/docker-compose-dev.yaml"
+
+logInfo(){
+  echo "$(date +"%Y-%m-%d %H:%M:%S") [INFO] [$1]"
+}
+
+logError() {
+  echo "$(date +"%Y-%m-%d %H:%M:%S") [ERROR] [$1]" >&2
+}
+
+up(){
+  CURRENT_JAVA_DIR=$(which java)
+  CURRENT_JAVA_VERSION=$($CURRENT_JAVA_DIR --version | head -n 1)
+
+  logInfo "Validating Java bin: $CURRENT_JAVA_DIR | version: $CURRENT_JAVA_VERSION"
+
+  # Maven
+  CURRENT_MAVEN_DIR=$(which mvn)
+  CURRENT_MAVEN_VERSION=$($CURRENT_MAVEN_DIR --version | head -n 1)
+  logInfo "Validating Maven bin: $CURRENT_MAVEN_DIR | version: $CURRENT_MAVEN_VERSION"
+
+  # Docker
+  CURRENT_DOCKER_DIR=$(which docker)
+  CURRENT_DOCKER_VERSION=$($CURRENT_DOCKER_DIR --version | head -n 1)
+  logInfo "Validating Docker bin: $CURRENT_DOCKER_DIR | version: $CURRENT_DOCKER_VERSION"
+
+  # Run Docker Compose
+  docker compose -f $COMPOSE_FILE up -d
+  return 0
+}
+
+down(){
+  docker compose -f $COMPOSE_FILE stop
+  return 0
+}
+
+remove(){
+  docker compose -f $COMPOSE_FILE down -v
+  return 0
+}
+
+helpPanel() {
+  cat <<EOF
+Usage: $(basename "$0") [OPTION]
+
+Manage the ticket4u local environment (docker compose).
+
+Options:
+  (no option)         Start all containers (same as --restart)
+  --restart, -r       Start/restart all containers
+  --stop, -s          Stop all containers (data is kept)
+  --uninstall, -u     Remove containers and volumes (DATA WILL BE LOST)
+  --help, -h          Show this help message
+
+Examples:
+  $(basename "$0")             # start environment
+  $(basename "$0") --stop | -s      # stop environment
+EOF
+}
+
+listCommand=$@
+for item in "$listCommand"; do
+  case $item in
+    --help|-h)
+      helpPanel 
+      ;;
+    --stop|-s)
+      down
+      echo "Applications stopped"
+      ;;
+    --uninstall|-u)
+      read -r -p "This will remove all ticket4u containers and volumes. Continue? [y/N] " answer
+      case $answer in
+        y|Y)
+          remove 
+          ;;
+        n|N)
+          echo "Nothing changes"
+          ;;
+        *)
+          echo "Nothing changes"
+          ;;
+      esac
+      ;;
+    --restart|-r)
+      up
+      echo "Applications restarted"
+      ;;
+    *)
+      up
+      echo "Applications started"
+      ;;
+  esac
+done
